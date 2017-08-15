@@ -2,23 +2,20 @@ function Queue(capacity) {
   this._capacity = capacity || infinity;
   this._storage = {};
   this._head = 0;
-  this._count = 0;
-  this._end = 0;
+  this._tail = 0;
 }
 
 Queue.prototype.enqueue = function(value) {
-  if (this._count === this._capacity) {
+  if (this.count() === this._capacity) {
     return 'Max capacity reached';
   }
-  this._storage[this._end++] = value;
-  this._count++;
-  return this._count;
+  this._storage[this._tail++] = value;
+  return this.count();
 };
 // Time complexity: O(1)
 
 Queue.prototype.dequeue = function() {
   var dequeued = this._storage[this._head++];
-  this._count--;
   return dequeued;
 };
 // Time complexity: O(1)
@@ -28,7 +25,7 @@ Queue.prototype.peek = function() {
 };
 
 Queue.prototype.count = function() {
-  return this._count;
+  return this._tail - this._head;
 };
 // Time complexity: O(1)
 
@@ -45,7 +42,7 @@ Queue.prototype.contains = function(value) {
 
 Queue.prototype.until = function(value) {
   let count = 1;
-  for (var i = this._head; i <= this._end; i++) {
+  for (var i = this._head; i <= this._tail; i++) {
     if (this._storage[i] === value) {
       return count;
     }
